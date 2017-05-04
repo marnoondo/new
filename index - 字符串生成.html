@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+		<style>
+			html {
+				width: 100%;
+				height: 100%;
+			}
+			body{
+				margin: 0px;
+				width: 100%;
+				height: 100%;
+			}
+			.main {
+				width: 100%;
+				height: 100%;
+				background: url(./image/bg.png) no-repeat;
+				background-size: 100% 100%;
+				overflow: -hidden;
+			}
+			.logo {
+				display: block;
+				width: 200px;
+				height: 55px;
+				background: url(./image/logo.png) no-repeat;
+				margin: 20px auto;
+			}
+			ul{
+				list-style: none;
+				font-size: 22px;
+				color: #8c949c;
+				font-weight: bold;
+			}
+			ul li {
+				position: relative;
+				padding-left: 10px;
+			}
+			ul li div{
+				height: 98%;
+				width: 1px;
+				border-left: 2px dotted #000;
+				position: absolute;
+				left: 14px;
+				top: 18px;
+			}
+			ul ul{
+				display: none;
+			}
+			ul ul.active {
+				display: block;
+			}
+			ul li span {
+				display: block;
+				line-height: 32px;
+				padding-left: 15px;
+				background: url(./image/icon.png) no-repeat left 500px;
+			}
+			ul li span.add {
+				background-position: 0px -32px;
+			}
+			ul li span.line {
+				background-position: 0px 11px;
+			}
+			.tree {
+				margin-left: 300px;
+			}
+		</style>
+		<script>
+		var data = [
+			{
+				title: '第一级菜单',
+				child: [
+					{
+						title: '第二级菜单',
+						child: [
+							{
+								title: '第三级菜单'
+							},
+							{
+								title: '第三级菜单'
+							}
+						]
+					},
+					{
+						title: '第二级菜单',
+						child: [
+							{
+								title: '第三级菜单'
+							},
+							{
+								title: '第三级菜单',
+								child: [
+									{
+										title: '第四级菜单'
+									}
+								]
+							}
+						]
+					},
+					{
+						title: '第二级菜单'
+					}
+				]
+			},
+			{
+				title: '第一级菜单',
+				child: [
+					{
+						title: '第二级菜单'
+					},
+					{
+						title: '第二级菜单'
+					},
+					{
+						title: '第二级菜单'
+					}
+				]
+			},
+			{
+				title: '第一级菜单',
+				child: [
+					{
+						title: '第二级菜单'
+					},
+					{
+						title: '第二级菜单'
+					},
+					{
+						title: '第二级菜单',
+						child: [
+							{
+								title: '第三级菜单'
+							}
+						]
+					}
+				]
+			}
+		];
+		</script>
+	</head>
+	<body>
+		<div class="main">
+			<a href="http://www.miaov.com" class="logo"></a>
+			<div class="tree">
+				<ul id="oUl"></ul>
+			</div>
+		</div>
+		<div class="box"></div>
+		<script>
+			var list = document.querySelector('#oUl');
+			
+			//list.innerHTML = createList(data);
+			
+			//console.log(createList(data));
+			
+			// function createList(data){
+			// 	var str = '';
+			// 	// xxxx
+			// 	for(var i=0, len = data.length; i<len; i++){
+			// 		var cls = data[i].child ? 'add' : '';
+			// 		str += `<li><span class="${cls}">${data[i].title}</span>`;
+			// 		if(data[i].child){
+			// 			str += `<ul>${createList(data[i].child)}</ul>`;
+			// 			str += i < len - 1 ? `<div></div>` : '';
+			// 		}
+			// 		str += `</li>`;
+			// 	}
+			// 	return str;
+			// }
+			
+			menuList(list);
+			
+			function menuList(ul){
+				var children = ul.children;
+				if(children[0].firstElementChild.onclick) {
+					return;
+				}
+				for(var i=0; i<children.length; i++){
+					var span = children[i].firstElementChild;
+					console.log(1);
+					span.onclick = function (){
+						var nextSibling = this.nextElementSibling;
+						var parentParent = this.parentNode.parentNode;
+						var uls = parentParent.getElementsByTagName('ul');
+						if(nextSibling){
+							for(var i=0; i<uls.length; i++){
+								if(uls[i] != nextSibling){
+									uls[i].classList.remove('active');
+									uls[i].previousElementSibling.classList.remove('line');
+								}
+							}
+							nextSibling.classList.toggle('active');
+							this.classList.toggle('line');
+							menuList(nextSibling);
+						}
+					};
+				}
+			}
+			
+			// ele.onclick = function (){
+			// 	alert(1);
+			// 	ele.onclick = function (){
+			// 		alert(1);
+			// 	}
+			// };
+			
+			// console.log(document.querySelector('.box').onclick);
+			// 
+			// document.querySelector('.box').onclick = function (){
+			// 	alert(1);
+			// };
+			// 
+			// console.log(document.querySelector('.box').onclick);
+			// 
+		</script>
+	</body>
+</html>
